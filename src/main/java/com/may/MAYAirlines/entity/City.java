@@ -15,6 +15,12 @@ public class City {
         this.airportList=new ArrayList<>();
     }
 
+    public City(int id,String name, Country country) {
+        this.id=id;
+        this.name = name;
+        this.country = country;
+        this.airportList=new ArrayList<>();
+    }
     public City(String name, Country country) {
         this.name = name;
         this.country = country;

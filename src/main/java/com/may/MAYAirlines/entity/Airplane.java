@@ -14,6 +14,12 @@ public class Airplane {
     public Airplane() {
         this.flightList=new ArrayList<>();
     }
+    public Airplane(int id,String planeType, int capacity){
+        this.id = id;
+        this.planeType = planeType;
+        this.capacity = capacity;
+        this.flightList=new ArrayList<>();
+    }
 
     public Airplane(String planeType, int capacity) {
         this.planeType = planeType;
@@ -22,7 +28,7 @@ public class Airplane {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
 

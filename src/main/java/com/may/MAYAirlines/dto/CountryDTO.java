@@ -4,6 +4,7 @@ import com.may.MAYAirlines.entity.Country;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CountryDTO {
@@ -26,6 +27,19 @@ public class CountryDTO {
         this.createDate=country.getCreateDate();
         this.updateDate=country.getUpdateDate();
         this.status=country.isStatus();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CountryDTO that = (CountryDTO) o;
+        return id == that.id && status == that.status && Objects.equals(name, that.name) && Objects.equals(countryCode, that.countryCode) && Objects.equals(cities, that.cities) && Objects.equals(createDate, that.createDate) && Objects.equals(updateDate, that.updateDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, countryCode, cities, createDate, updateDate, status);
     }
 
     public int getId() {

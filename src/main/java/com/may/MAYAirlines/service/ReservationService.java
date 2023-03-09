@@ -31,7 +31,15 @@ public class ReservationService {
     public List<ReservationDTO> getAll() {
         return repository.findAll()
                 .stream()
-                .map(ReservationDTO::new)
+                .map(reservation -> new ReservationDTO(
+                        reservation.getId(),
+                        reservation.getCustomer().getId(),
+                        reservation.getFlight().getId(),
+                        reservation.getSeatNo(),
+                        reservation.getCreateDate(),
+                        reservation.getUpdateDate(),
+                        reservation.isStatus()
+                ))
                 .collect(Collectors.toList());
     }
 

@@ -15,6 +15,15 @@ public class Country {
         this.cities=new ArrayList<>();
     }
 
+    public Country(int id,
+                   String name,
+                   String countryCode) {
+        this.id=id;
+        this.name = name;
+        this.countryCode = countryCode;
+        this.cities=new ArrayList<>();
+    }
+
     public Country(String name,
                    String countryCode) {
         this.name = name;

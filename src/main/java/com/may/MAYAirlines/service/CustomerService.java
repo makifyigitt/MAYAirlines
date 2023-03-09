@@ -39,7 +39,19 @@ public class CustomerService {
     public List<CustomerDTO> getAllActiveCustomers() {
         return customerRepository.getAllActiveCustomers()
                 .stream()
-                .map(CustomerDTO::new)
+                .map(customer -> new CustomerDTO(
+                        customer.getId(),
+                        customer.getUsername(),
+                        customer.getFirstName(),
+                        customer.getSurname(),
+                        customer.getEmail(),
+                        customer.getPhoneNumber(),
+                        customer.getAddress(),
+                        customer.isStatus(),
+                        customer.getReservationList(),
+                        customer.getCreateDate(),
+                        customer.getUpdateDate()
+                ))
                 .collect(Collectors.toList());
     }
 

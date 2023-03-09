@@ -7,7 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -114,6 +114,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logger.error("Custom error handling. Error code: "+exception.getErrorCode(),
                 new UsernameExistException(ErrorCode.USERNAME_IS_USED));
         return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity userNotFoundExceptionHandler(UserNotFoundException exception){
+        logger.error("Custom error handling. Error code: "+exception.getErrorCode(),
+                new UserNotFoundException(ErrorCode.USER_NOT_FOUND));
+        return new ResponseEntity(exception.getMessage(),HttpStatus.NOT_FOUND);
     }
 
 //    @ExceptionHandler(UsernameNotFoundException.class)

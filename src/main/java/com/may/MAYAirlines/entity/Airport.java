@@ -16,6 +16,14 @@ public class Airport {
         this.arrivalAirportList=new ArrayList<>();
         this.deparetureAirportList=new ArrayList<>();
     }
+    public Airport(int id,String name, String airportCode, City city) {
+        this.id=id;
+        this.name = name;
+        this.airportCode=airportCode;
+        this.city = city;
+        this.arrivalAirportList=new ArrayList<>();
+        this.deparetureAirportList=new ArrayList<>();
+    }
 
     public Airport(String name, String airportCode, City city) {
         this.name = name;

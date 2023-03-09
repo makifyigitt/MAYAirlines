@@ -3,6 +3,7 @@ package com.may.MAYAirlines.dto;
 import com.may.MAYAirlines.entity.Airport;
 
 import java.util.Date;
+import java.util.Objects;
 
 
 public class AirportDTO {
@@ -22,6 +23,19 @@ public class AirportDTO {
         this.createDate=airport.getCreateDate();
         this.updateDate=airport.getUpdateDate();
         this.status=airport.isStatus();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AirportDTO that = (AirportDTO) o;
+        return id == that.id && status == that.status && Objects.equals(name, that.name) && Objects.equals(airportCode, that.airportCode) && Objects.equals(cityName, that.cityName) && Objects.equals(createDate, that.createDate) && Objects.equals(updateDate, that.updateDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, airportCode, cityName, createDate, updateDate, status);
     }
 
     public int getId() {

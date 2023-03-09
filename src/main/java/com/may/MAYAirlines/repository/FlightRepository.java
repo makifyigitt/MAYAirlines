@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface FlightRepository extends JpaRepository<Flight,Integer> {
-    @Query("select c from Flight c where c.status = true ")
+    @Query("select c from Flight c where c.status = true")
     List<Flight> getAllActiveFlights();
 }

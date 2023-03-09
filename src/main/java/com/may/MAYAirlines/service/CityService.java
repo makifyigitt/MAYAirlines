@@ -1,5 +1,6 @@
 package com.may.MAYAirlines.service;
 
+import com.may.MAYAirlines.core.exception.CityNotFoundException;
 import com.may.MAYAirlines.core.exception.CustomerNotFoundException;
 import com.may.MAYAirlines.core.exception.ErrorCode;
 import com.may.MAYAirlines.dto.CityDTO;
@@ -43,13 +44,14 @@ public class CityService {
 
     protected  City findById(int id){
         return cityRepository.findById(id)
-                .orElseThrow(()-> new CustomerNotFoundException(ErrorCode.CITY_NOT_FOUND));
+                .orElseThrow(()-> new CityNotFoundException(ErrorCode.CITY_NOT_FOUND));
     }
 
     public CityDTO getById(int id){
         return new CityDTO(findById(id));
     }
 
+    //sor: country yolluyoruz, bu country databasede var mı yok mu kontrollünü yapmamız gerek var mı
     public void addCity( String name, Country country){
         City city = new City(name,country);
         cityRepository.save(city);

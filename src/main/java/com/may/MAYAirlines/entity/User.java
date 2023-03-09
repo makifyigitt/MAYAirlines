@@ -5,43 +5,28 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.authority.AuthorityUtils;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
 
 
-import java.util.*;
+import java.util.Date;
 
 @Entity
-@Table(name = "customers")
-public class Customer {//implements UserDetails
+@Table(name = "users")
+public class User{
 
-    public Customer() {
-        this.reservationList = new ArrayList<>();
+    public User(){
     }
 
-    public Customer(int id, String username, String password, String firstName, String surname){
-        this.id=id;
+    public User(String username, String password, String firstName, String surname) {
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.surname = surname;
-        this.reservationList = new ArrayList<>();
     }
-
-    public Customer(String username, String password, String firstName, String surname) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.surname = surname;
-        this.reservationList = new ArrayList<>();
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
+
     @NotNull
     @Size(min = 4,max = 30)
     @Column(name = "username")
@@ -72,18 +57,16 @@ public class Customer {//implements UserDetails
     private String address;
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.CUSTOMER;
+    private Role role = Role.ADMIN;
 
-    @OneToMany(mappedBy = "customer")
-    private List<Reservation> reservationList = new ArrayList<>();
     @Column(name = "create_date")
-    private Date createDate = new Date();
+    private Date createDate = new Date(System.currentTimeMillis());
+
     @Column(name = "update_date")
     private Date updateDate;
+
     @Column(name = "status")
     private boolean status = true;
-
-
 
     public int getId() {
         return id;
@@ -100,42 +83,6 @@ public class Customer {//implements UserDetails
     public void setUsername(String username) {
         this.username = username;
     }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-    //    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
-//
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return List.of(new SimpleGrantedAuthority(role.name()));
-//    }
 
     public String getPassword() {
         return password;
@@ -185,12 +132,12 @@ public class Customer {//implements UserDetails
         this.address = address;
     }
 
-    public List<Reservation> getReservationList() {
-        return reservationList;
+    public Role getRole() {
+        return role;
     }
 
-    public void setReservationList(List<Reservation> reservationList) {
-        this.reservationList = reservationList;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Date getCreateDate() {
