@@ -47,7 +47,6 @@ class CityServiceTest {
         Mockito.verify(cityRepository).findAll();
     }
 
-    //TODO repositorynin nasıl davranacağını biz belirliyoruz? test her türlü pass olmucak mı?
     @Test
     void getAllActiveCities_shouldReturnCityDTOList() {
         City city = new City("İstanbul",new Country("Turkey","TR"));

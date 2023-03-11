@@ -2,12 +2,14 @@ package com.may.MAYAirlines.service;
 
 import com.may.MAYAirlines.core.exception.CustomerNotFoundException;
 import com.may.MAYAirlines.core.exception.ErrorCode;
+import com.may.MAYAirlines.core.exception.PasswordIsWrongException;
 import com.may.MAYAirlines.core.exception.UsernameExistException;
 import com.may.MAYAirlines.dto.CustomerCreateDTO;
 import com.may.MAYAirlines.dto.CustomerDTO;
 import com.may.MAYAirlines.dto.CustomerUpdateDTO;
 import com.may.MAYAirlines.entity.Customer;
 import com.may.MAYAirlines.repository.CustomerRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,9 +19,12 @@ import java.util.stream.Collectors;
 @Service
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public CustomerService(CustomerRepository customerRepository) {
+
+    public CustomerService(CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
         this.customerRepository = customerRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<CustomerDTO> getAllCustomers() {
@@ -39,19 +44,7 @@ public class CustomerService {
     public List<CustomerDTO> getAllActiveCustomers() {
         return customerRepository.getAllActiveCustomers()
                 .stream()
-                .map(customer -> new CustomerDTO(
-                        customer.getId(),
-                        customer.getUsername(),
-                        customer.getFirstName(),
-                        customer.getSurname(),
-                        customer.getEmail(),
-                        customer.getPhoneNumber(),
-                        customer.getAddress(),
-                        customer.isStatus(),
-                        customer.getReservationList(),
-                        customer.getCreateDate(),
-                        customer.getUpdateDate()
-                ))
+                .map(CustomerDTO::new)
                 .collect(Collectors.toList());
     }
 
@@ -72,7 +65,7 @@ public class CustomerService {
         else{
             Customer newCustomer = new Customer();
             newCustomer.setUsername(from.getUsername());
-            newCustomer.setPassword(from.getPassword());
+            newCustomer.setPassword(passwordEncoder.encode(from.getPassword()));
             newCustomer.setFirstName(from.getFirstName());
             newCustomer.setSurname(from.getSurname());
             newCustomer.setEmail(from.getEmail());
@@ -103,5 +96,19 @@ public class CustomerService {
         Customer customer = findById(id);
         customer.setStatus(false);
         customerRepository.save(customer);
+    }
+
+    public void changePassword(int id,
+                               String oldPassword,
+                               String newPassword) {
+        Customer customer = findById(id);
+        if (passwordEncoder.matches(oldPassword, customer.getPassword())){
+            customer.setPassword(passwordEncoder.encode(newPassword));
+            customer.setUpdateDate(new Date());
+            customerRepository.save(customer);
+        }
+        else{
+            throw new PasswordIsWrongException(ErrorCode.PASSWORD_IS_WRONG);
+        }
     }
 }

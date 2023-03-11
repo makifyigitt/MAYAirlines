@@ -1,43 +1,22 @@
 package com.may.MAYAirlines.entity;
 
+import com.may.MAYAirlines.token.Token;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.authority.AuthorityUtils;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 
 
 import java.util.*;
 
 @Entity
 @Table(name = "customers")
-public class Customer {//implements UserDetails
-
-    public Customer() {
-        this.reservationList = new ArrayList<>();
-    }
-
-    public Customer(int id, String username, String password, String firstName, String surname){
-        this.id=id;
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.surname = surname;
-        this.reservationList = new ArrayList<>();
-    }
-
-    public Customer(String username, String password, String firstName, String surname) {
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.surname = surname;
-        this.reservationList = new ArrayList<>();
-    }
-
+public class Customer implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -47,7 +26,7 @@ public class Customer {//implements UserDetails
     @Column(name = "username")
     private String username;
     @NotNull
-    @Size(min = 4,max = 30)
+    @Size(min = 4,max = 255)
     @Column(name = "password")
     private String password;
     @NotNull
@@ -75,6 +54,9 @@ public class Customer {//implements UserDetails
     private Role role = Role.CUSTOMER;
 
     @OneToMany(mappedBy = "customer")
+    private List<Token> tokens;
+
+    @OneToMany(mappedBy = "customer")
     private List<Reservation> reservationList = new ArrayList<>();
     @Column(name = "create_date")
     private Date createDate = new Date();
@@ -84,6 +66,71 @@ public class Customer {//implements UserDetails
     private boolean status = true;
 
 
+    public Customer() {
+        this.reservationList = new ArrayList<>();
+    }
+
+    public Customer(int id, String username, String password, String firstName, String surname){
+        this.id=id;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.reservationList = new ArrayList<>();
+    }
+
+    public Customer(String username, String password, String firstName, String surname) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.reservationList = new ArrayList<>();
+    }
+
+    public Customer(String username, String password, String firstName, String surname,String email) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.surname = surname;
+        this.email=email;
+        this.reservationList = new ArrayList<>();
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return status;
+    }
 
     public int getId() {
         return id;
@@ -93,52 +140,8 @@ public class Customer {//implements UserDetails
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-    //    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
-//
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return List.of(new SimpleGrantedAuthority(role.name()));
-//    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
@@ -183,6 +186,22 @@ public class Customer {//implements UserDetails
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(List<Token> tokens) {
+        this.tokens = tokens;
     }
 
     public List<Reservation> getReservationList() {

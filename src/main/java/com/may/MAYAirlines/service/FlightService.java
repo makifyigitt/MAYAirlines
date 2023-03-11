@@ -80,7 +80,7 @@ public class FlightService {
             throw new AirportNotActiveException(ErrorCode.AIRPORT_NOT_ACTIVE);
         }
     }
-    //TODO airport activeliğinin city ve country ile kontrollünü sağla.
+
     public void update(FlightUpdateDTO flightUpdateDTO) {
         Flight flight = findById(flightUpdateDTO.getId());
         flight.setAirplane(airplaneService.findById(flightUpdateDTO.getAirplaneId()));

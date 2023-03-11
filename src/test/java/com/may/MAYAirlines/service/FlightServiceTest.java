@@ -28,10 +28,10 @@ class FlightServiceTest {
         this.airportService=mock(AirportService.class);
         this.flightService = new FlightService(flightRepository,airplaneService,airportService);
     }
-
+//TODO testlere devam
     @Test
     void getAll() {
-        Date date = new Date(1532516399000);
+        Date date = new Date();
         Flight flight = new Flight();
     }
 

@@ -80,7 +80,7 @@ public class CountryService {
         countryRepository.save(country);
         country.getCities()
                 .forEach(k-> cityService.makeActiveCity(k.getId()));
-        //TODO country service ve city service kendi arasında looa girecek ona çözüm bul
+
     }
     @Transactional
     public void makeInactiveCountry(int id){

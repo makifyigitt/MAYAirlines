@@ -7,6 +7,7 @@ import com.may.MAYAirlines.repository.CustomerRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,13 +19,17 @@ class CustomerServiceTest {
 
     private CustomerService customerService;
     private CustomerRepository customerRepository;
+    private PasswordEncoder passwordEncoder;
+
+
     @BeforeEach
     void setUp() {
         customerRepository = Mockito.mock(CustomerRepository.class);
-        customerService = new CustomerService(customerRepository);
+        passwordEncoder = Mockito.mock(PasswordEncoder.class);
+        customerService = new CustomerService(customerRepository, passwordEncoder);
     }
 
-    //TODO dtolara equal and hashCode methodlarını override etmem gerekiyor bi sıkıntı mı var?
+
     @Test
     void testGetAllCustomers_shouldReturnCustomerDTOList() {
         Customer customer =new Customer("makifyigit","akif123456789","Mehmet Akif","Yiğit");

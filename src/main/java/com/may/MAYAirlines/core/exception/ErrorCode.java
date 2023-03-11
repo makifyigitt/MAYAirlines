@@ -12,7 +12,8 @@ public enum ErrorCode {
     AIRPORT_CODE_IS_EXIST(9,"Aynı kısaltmaya sahip bir havaalanı bulunmaktadır."),
     COUNTRY_CODE_IS_EXIST(10,"Aynı kısaltmaya sahip bir ülke bulunmaktadır."),
     RESERVATION_NOT_FOUND(11,"Rezervasyon bulunumadı."),
-    USER_NOT_FOUND(12,"Kullanıcı bulunamadı.")
+    USER_NOT_FOUND(12,"Kullanıcı bulunamadı."),
+    PASSWORD_IS_WRONG(13,"Girdiğiniz parola hatalıdır.")
     ;
 
     private final int errorCode;

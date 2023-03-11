@@ -71,4 +71,12 @@ public class CustomerController {
         customerService.inactive(id);
         return new BaseResponse(Response.DELETE);
     }
+
+    @PatchMapping("/passwordChange")
+    public BaseResponse changePassword(@RequestParam int id,
+                                       @RequestParam String oldPassword,
+                                       @RequestParam String newPassword){
+        customerService.changePassword(id,oldPassword,newPassword);
+        return new BaseResponse(Response.UPDATE);
+    }
 }

@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer,Integer> {
 
     Optional<Customer> findByUsername(String username);
+    Optional<Customer> findByEmail(String email);
     @Query("select c from Customer c where  c.status = true ")
     List<Customer> getAllActiveCustomers();
     @Query("select c from Customer c where  c.status = false ")

@@ -6,6 +6,11 @@ import com.may.MAYAirlines.entity.Reservation;
 import java.util.Date;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class ReservationDTO {
+    /*
+    TODO Record class ile yapılmalı mı? https://www.youtube.com/watch?v=5yquJa2x3Ko&t=939&ab_channel=Amigoscode
+    TODO hangisi daha mantıklı?
+     */
+
     private int id;
     private int customerId;
     private int flightId;
@@ -21,8 +26,18 @@ public class ReservationDTO {
         this.seatNo=seatNo;
         this.createDate=createDate;
         this.updateDate=updateDate;
-        this.status=status;
+        this.status= status;
     }
+    public ReservationDTO(Reservation reservation){
+        this.id=reservation.getId();
+        this.customerId=reservation.getCustomer().getId();
+        this.flightId=reservation.getFlight().getId();
+        this.seatNo=reservation.getSeatNo();
+        this.createDate=reservation.getCreateDate();
+        this.updateDate=reservation.getUpdateDate();
+        this.status= reservation.isStatus();
+    }
+
 
 //    public ReservationDTO(Reservation reservation){
 //        this.id=reservation.getId();

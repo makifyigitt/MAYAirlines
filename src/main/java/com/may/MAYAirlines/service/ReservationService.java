@@ -3,6 +3,7 @@ package com.may.MAYAirlines.service;
 import com.may.MAYAirlines.core.exception.ErrorCode;
 import com.may.MAYAirlines.core.exception.ReservationNotFound;
 import com.may.MAYAirlines.dto.ReservationDTO;
+import com.may.MAYAirlines.dto.ReservationDTOMapper;
 import com.may.MAYAirlines.entity.Reservation;
 import com.may.MAYAirlines.repository.ReservationRepository;
 import jakarta.transaction.Transactional;
@@ -17,29 +18,23 @@ public class ReservationService {
     private final ReservationRepository repository;
     private final CustomerService customerService;
     private final FlightService flightService;
+    private final ReservationDTOMapper reservationDTOMapper;
 
 
     public ReservationService(ReservationRepository reservationRepository,
                               CustomerService customerService,
-                              FlightService flightService) {
+                              FlightService flightService, ReservationDTOMapper mapper) {
         this.repository = reservationRepository;
         this.customerService = customerService;
         this.flightService = flightService;
+        this.reservationDTOMapper = mapper;
     }
 
 
     public List<ReservationDTO> getAll() {
         return repository.findAll()
                 .stream()
-                .map(reservation -> new ReservationDTO(
-                        reservation.getId(),
-                        reservation.getCustomer().getId(),
-                        reservation.getFlight().getId(),
-                        reservation.getSeatNo(),
-                        reservation.getCreateDate(),
-                        reservation.getUpdateDate(),
-                        reservation.isStatus()
-                ))
+                .map(reservationDTOMapper)
                 .collect(Collectors.toList());
     }
 
@@ -47,7 +42,7 @@ public class ReservationService {
     public List<ReservationDTO> getAllActive() {
         return repository.getAllReservations()
                 .stream()
-                .map(ReservationDTO::new)
+                .map(reservationDTOMapper)
                 .collect(Collectors.toList());
     }
 
@@ -58,7 +53,7 @@ public class ReservationService {
 
 
     public ReservationDTO getById(int id) {
-        return new ReservationDTO(findById(id));
+        return reservationDTOMapper.apply(findById(id));
     }
 
 

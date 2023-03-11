@@ -123,6 +123,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(exception.getMessage(),HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity PasswordIsWrongExceptionHandler(PasswordIsWrongException exception){
+        logger.error("Custom error handling. Error code: "+exception.getErrorCode(),
+                new PasswordIsWrongException(ErrorCode.PASSWORD_IS_WRONG));
+        return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
 //    @ExceptionHandler(UsernameNotFoundException.class)
 //    public ResponseEntity usernameNotFoundExceptionHandler(UsernameNotFoundException exception){
 //        logger.error(exception.getMessage(),exception.getCause());

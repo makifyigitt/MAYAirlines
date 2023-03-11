@@ -66,4 +66,12 @@ public class UserController {
         userService.inactive(id);
         return new BaseResponse(Response.DELETE);
     }
+
+    @PatchMapping("/passwordChange")
+    public BaseResponse changePassword(@RequestParam int id,
+                                       @RequestParam String oldPassword,
+                                       @RequestParam String newPassword){
+        userService.changePassword(id,oldPassword,newPassword);
+        return new BaseResponse(Response.UPDATE);
+    }
 }

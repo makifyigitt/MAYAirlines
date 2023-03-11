@@ -1,8 +1,8 @@
-//package com.may.MAYAirlines.entity;
-
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-
+////package com.may.MAYAirlines.entity;
+//
+//import jakarta.persistence.*;
+//import jakarta.validation.constraints.Email;
+//
 //@Entity
 //@Table(name = "emails")
 //public class Email {

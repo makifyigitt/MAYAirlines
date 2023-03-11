@@ -1,6 +1,7 @@
 package com.may.MAYAirlines.service;
 
 import com.may.MAYAirlines.core.exception.ErrorCode;
+import com.may.MAYAirlines.core.exception.PasswordIsWrongException;
 import com.may.MAYAirlines.core.exception.UserNotFoundException;
 import com.may.MAYAirlines.core.exception.UsernameExistException;
 import com.may.MAYAirlines.dto.UserCreateDTO;
@@ -8,6 +9,7 @@ import com.may.MAYAirlines.dto.UserDTO;
 import com.may.MAYAirlines.dto.UserUpdateDTO;
 import com.may.MAYAirlines.entity.User;
 import com.may.MAYAirlines.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,9 +19,11 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -53,6 +57,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 //TODO hem customer hem user da username kontrollü yapılmalı.
+    //ayrı servis 
     public void create(UserCreateDTO from) {
         if (userRepository.findByUsername(from.getUsername()).isPresent())
             throw new UsernameExistException(ErrorCode.USERNAME_IS_USED);
@@ -90,5 +95,19 @@ public class UserService {
         User user = findById(id);
         user.setStatus(false);
         userRepository.save(user);
+    }
+
+    public void changePassword(int id,
+                               String oldPassword,
+                               String newPassword) {
+        User user = findById(id);
+        if (passwordEncoder.matches(oldPassword, user.getPassword())){
+            user.setPassword(passwordEncoder.encode(newPassword));
+            user.setUpdateDate(new Date());
+            userRepository.save(user);
+        }
+        else{
+            throw new PasswordIsWrongException(ErrorCode.PASSWORD_IS_WRONG);
+        }
     }
 }
