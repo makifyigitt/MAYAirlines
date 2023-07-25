@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/auth")
-public class AuthenticationController {
-    private final AuthenticationService authenticationService;
+@RequestMapping("/api/v1/auth/customer")
+public class AuthenticationCustomerController {
+    private final AuthenticationCustomerService authenticationService;
 
-    public AuthenticationController(AuthenticationService authenticationService) {
+    public AuthenticationCustomerController(AuthenticationCustomerService authenticationService) {
         this.authenticationService = authenticationService;
     }
 
@@ -19,7 +19,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.register(request));
     }
-    @PostMapping("/authenticate")
+        @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
         return ResponseEntity.ok(authenticationService.authenticate(request));
     }

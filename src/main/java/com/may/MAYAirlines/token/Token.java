@@ -1,6 +1,7 @@
 package com.may.MAYAirlines.token;
 
 import com.may.MAYAirlines.entity.Customer;
+import com.may.MAYAirlines.entity.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -24,12 +25,19 @@ public class Token {
     @JoinColumn(name = "customer_id")
     public Customer customer;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    public User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    public User user;
 
 
     public Token() {
+    }
+
+    public Token(String token, boolean revoked, boolean expired, User user) {
+        this.token = token;
+        this.revoked = revoked;
+        this.expired = expired;
+        this.user = user;
     }
 
     public Token(String token, boolean revoked, boolean expired, Customer customer) {

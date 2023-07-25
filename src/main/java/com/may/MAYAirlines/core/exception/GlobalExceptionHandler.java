@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -123,17 +124,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(exception.getMessage(),HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler(PasswordIsWrongException.class)
     public ResponseEntity PasswordIsWrongExceptionHandler(PasswordIsWrongException exception){
         logger.error("Custom error handling. Error code: "+exception.getErrorCode(),
                 new PasswordIsWrongException(ErrorCode.PASSWORD_IS_WRONG));
         return new ResponseEntity(exception.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
-//    @ExceptionHandler(UsernameNotFoundException.class)
-//    public ResponseEntity usernameNotFoundExceptionHandler(UsernameNotFoundException exception){
-//        logger.error(exception.getMessage(),exception.getCause());
-//        return new ResponseEntity(exception.getMessage(),HttpStatus.NOT_FOUND);
-//    }
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity usernameNotFoundExceptionHandler(UsernameNotFoundException exception){
+        logger.error(exception.getMessage(),exception.getCause());
+        return new ResponseEntity(exception.getMessage(),HttpStatus.NOT_FOUND);
+    }
 //TODO durma göre usernotfound için hata yakalamayı düşünebilirsin
 }
